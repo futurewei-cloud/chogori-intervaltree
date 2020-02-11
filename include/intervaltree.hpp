@@ -55,8 +55,7 @@ struct Interval
     bool operator==(const Interval &other) const
     {
         return !(low < other.low || other.low < low
-                 || high < other.high || other.high < high
-                 || value < other.value || other.value < value);
+                 || high < other.high || other.high < high);
     }
 
 
@@ -316,6 +315,27 @@ public:
         assert(node != m_nill);
 
         return isNodeHasInterval(node, interval);
+    }
+
+    Interval* find(Interval&& interval) const
+    {
+        assert(nullptr != m_root && nullptr != m_nill);
+
+        if (m_root == m_nill) {
+            // Tree is empty
+            assert(0 == m_size);
+            return nullptr;
+        }
+
+        Node *node = findNode(m_root, interval);
+        assert(node != m_nill);
+
+        auto it = std::find(node->intervals.begin(), node->intervals.end(), interval);
+        if (it == node->intervals.end()) {
+            return nullptr;
+        }
+
+        return &(*it);
     }
 
 
