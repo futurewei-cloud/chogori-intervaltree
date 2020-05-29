@@ -31,19 +31,13 @@ TEST_CASE("Intervals with the same boundaries and different values")
     };
 
     IntervalTree intervalTree;
-
-    for (auto interval : intervals) {
-        REQUIRE(intervalTree.insert(interval));
-    }
-
-    for (auto interval : intervals) {
-        REQUIRE_FALSE(intervalTree.insert(interval));
-    }
+    REQUIRE(intervalTree.insert(intervals[0]));
+    REQUIRE_FALSE(intervalTree.insert(intervals[1]));
 
     auto treeIntervals = intervalTree.intervals();
 
     REQUIRE_FALSE(treeIntervals.empty());
-    REQUIRE(std::is_permutation(treeIntervals.cbegin(), treeIntervals.cend(), intervals.cbegin()));
+    REQUIRE(treeIntervals[0] == intervals[0]);
 }
 
 
